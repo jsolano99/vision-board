@@ -101,19 +101,22 @@ export function BoardCanvas({
         />
       </div>
 
-      <p className="px-6 pt-1 text-xs text-ink-secondary">
+      <div className="space-y-0.5 px-6 pt-1 text-xs text-ink-secondary">
         {images.length === 0 ? (
           <>
-            <span className="font-semibold text-ink">Step 1 —</span> add a few images that show
-            what you&apos;re working toward.
+            <p>Start with the life you want.</p>
+            <p>
+              <span className="font-semibold text-ink">Step 1 —</span> Add images that
+              represent what you want more of by the end of the year.
+            </p>
           </>
         ) : (
-          <>
+          <p>
             <span className="font-semibold text-ink">Step 2 —</span> tap each photo&apos;s tag to
             set its category, then analyze.
-          </>
+          </p>
         )}
-      </p>
+      </div>
 
       <div ref={slotRef} className="relative m-4 min-h-[420px] rounded-2xl border-2 border-dashed border-canvas-line bg-card-sunken">
         {isDragOver && (
