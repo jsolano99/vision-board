@@ -1,0 +1,103 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-23T00:00:00.000Z",
+  "title": "Design System: Vision Board",
+  "extensions": {
+    "colorMeta": {
+      "brand": { "role": "primary", "displayName": "Coral", "canonical": "#cd3213", "tonalRamp": ["#3d0f06", "#5e170a", "#7f1e0d", "#95240e", "#cd3213", "#e0653f", "#f0a186", "#fbd6c9"] },
+      "canvas": { "role": "neutral", "displayName": "Canvas", "canonical": "#eef0f4" },
+      "card": { "role": "neutral", "displayName": "Card White", "canonical": "#ffffff" },
+      "cat-career": { "role": "category", "displayName": "Career Blue", "canonical": "#3d5bfd" },
+      "cat-health": { "role": "category", "displayName": "Health Green", "canonical": "#087737" },
+      "cat-relationships": { "role": "category", "displayName": "Relationships Purple", "canonical": "#8a35e0" },
+      "cat-travel": { "role": "category", "displayName": "Travel Gold", "canonical": "#e0961a" },
+      "cat-finance": { "role": "category", "displayName": "Finance Rose", "canonical": "#c22548" }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display (Jakarta 800)", "purpose": "Page H1 and the year-ring's centered day-count only." },
+      "body": { "displayName": "Body (Jakarta 400-600)", "purpose": "Everything else — one family, every role, via weight." }
+    },
+    "shadows": [
+      { "name": "surface-float", "value": "0 20px 40px -28px rgba(15,23,42,0.35)", "purpose": "The one diffuse shadow every floating card/panel/nav gets." },
+      { "name": "card-lift", "value": "0 14px 28px -16px rgba(15,23,42,0.4)", "purpose": "Small elements: board image cards, remove button." }
+    ],
+    "motion": [
+      { "name": "press-scale", "value": "transform 150ms ease; hover 1.02-1.03 scale, active 0.98 scale", "purpose": "Primary pill buttons only." },
+      { "name": "ring-fill", "value": "stroke-dashoffset 600ms ease-out", "purpose": "Year-progress ring updates." },
+      { "name": "tap-hint", "value": "tap-hint 3.2s cubic-bezier(0.16,1,0.3,1) infinite", "purpose": "Category badge's click-cursor icon, signals it's interactive." }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "lg", "value": "1024px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Pill button, coral fill, used for '+ Add Image', 'Analyze Board', 'Get Next Steps'.",
+      "html": "<button class=\"ds-btn-primary\">Analyze Board</button>",
+      "css": ".ds-btn-primary { background: #cd3213; color: #ffffff; border-radius: 9999px; padding: 10px 20px; font-weight: 600; font-size: 0.875rem; border: none; transition: transform 150ms ease, background 150ms ease; } .ds-btn-primary:hover { background: #95240e; transform: scale(1.02); } .ds-btn-primary:active { transform: scale(0.98); } .ds-btn-primary:disabled { background: #f4f5f8; color: #616875; cursor: not-allowed; transform: none; }"
+    },
+    {
+      "name": "Category Badge",
+      "kind": "chip",
+      "refersTo": "chip-category",
+      "description": "Tonal pill: pastel category tint background, saturated category text. The only badge style in the system.",
+      "html": "<span class=\"ds-badge\" style=\"background:#e8ecff;color:#3346c9\">Career</span>",
+      "css": ".ds-badge { display: inline-block; border-radius: 9999px; padding: 2px 10px; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.02em; }"
+    },
+    {
+      "name": "Dashboard Card",
+      "kind": "card",
+      "refersTo": "panel",
+      "description": "The board canvas and next-steps rail: white rounded card floating on the light canvas.",
+      "html": "<div class=\"ds-card\"><h2 class=\"ds-card-title\">Next Steps</h2></div>",
+      "css": ".ds-card { background: #ffffff; border-radius: 28px; padding: 24px; box-shadow: 0 20px 40px -28px rgba(15,23,42,0.35); } .ds-card-title { font-weight: 700; font-size: 1.25rem; letter-spacing: -0.01em; color: #14171f; }"
+    },
+    {
+      "name": "Year Progress Ring",
+      "kind": "custom",
+      "refersTo": "signature",
+      "description": "Radial SVG progress ring (fraction of year elapsed) with the day-count centered — the system's one signature device, translated from the reference's BPM gauge.",
+      "html": "<div class=\"ds-ring\"><svg width=\"128\" height=\"128\"><circle cx=\"64\" cy=\"64\" r=\"58.5\" fill=\"none\" stroke=\"#fde8e2\" stroke-width=\"11\"/><circle cx=\"64\" cy=\"64\" r=\"58.5\" fill=\"none\" stroke=\"#cd3213\" stroke-width=\"11\" stroke-linecap=\"round\"/></svg><span class=\"ds-ring-value\">131</span></div>",
+      "css": ".ds-ring { position: relative; width: 128px; height: 128px; } .ds-ring-value { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.875rem; color: #14171f; }"
+    },
+    {
+      "name": "Nav / Segmented Filter",
+      "kind": "nav",
+      "refersTo": "nav",
+      "description": "White pill container; active segment is a solid fill (coral for global nav, category color for filters) — the one place solid category color still appears.",
+      "html": "<div class=\"ds-segmented\"><span class=\"ds-segment-active\">All</span><span class=\"ds-segment\">Career</span></div>",
+      "css": ".ds-segmented { display: inline-flex; gap: 4px; background: #ffffff; border-radius: 9999px; padding: 6px; box-shadow: 0 12px 28px -20px rgba(15,23,42,0.4); } .ds-segment-active { background: #cd3213; color: #ffffff; border-radius: 9999px; padding: 6px 16px; font-weight: 600; font-size: 0.875rem; } .ds-segment { color: #616875; border-radius: 9999px; padding: 6px 16px; font-weight: 600; font-size: 0.875rem; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Morning Check-In",
+    "overview": "Vision Board's second visual world trades the first world's draft-day broadcast intensity for a calm, modern health/fitness-dashboard register — the vocabulary of a heart-rate or step-tracking app checked first thing in the morning. White rounded cards float on a light neutral canvas; one coral-red accent carries every primary action and the year's radial progress ring; five pastel category badges do the work saturated jersey-tag chips did in the first world, just quieter. This is a genuine redesign: the user re-pinned with new references after living with the sports-broadcast world, and this system replaces it outright — the old world is evidence of a direction tried and moved past, not an alternate authority.",
+    "keyCharacteristics": [
+      "Light neutral canvas with white cards, 24-28px radius, soft diffuse shadows — no dark panels anywhere in this world",
+      "One coral-red brand accent for every primary action and the progress ring; never a rainbow of equally-loud CTAs",
+      "Five tonal category badges (pastel background + saturated text); solid fills reserved for the segmented filter control only",
+      "A single geometric sans (Plus Jakarta Sans) carries every role from big numerals to small labels via weight alone",
+      "A radial progress ring is the one signature device, reserved for the year-countdown"
+    ],
+    "rules": [
+      { "name": "The One Accent Rule", "body": "Coral is the only color that appears as a solid, attention-seeking fill outside the fixed category taxonomy.", "section": "colors" },
+      { "name": "The No Second Face Rule", "body": "Every piece of type is Plus Jakarta Sans at some weight; no second family without a product reason.", "section": "typography" },
+      { "name": "The Diffuse-Only Rule", "body": "Every shadow is large-blur/low-opacity; no tight, dark, or hard-edged shadow anywhere.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do keep coral as the only solid loud accent outside the category taxonomy.",
+      "Do render every category badge as pastel-background/saturated-text.",
+      "Do use Plus Jakarta Sans at whatever weight the moment needs; never a second family.",
+      "Do give every floating card the same one-shadow diffuse treatment."
+    ],
+    "donts": [
+      "Don't reintroduce the first world's dark panels, saturated field, or condensed display face.",
+      "Don't style an unwired feature to look active; mute it like Sign In.",
+      "Don't drop text below 0.75rem (12px) anywhere in the system."
+    ]
+  }
+}

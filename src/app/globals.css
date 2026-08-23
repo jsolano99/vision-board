@@ -1,0 +1,119 @@
+@import "tailwindcss";
+
+:root {
+  --canvas: #eef0f4;
+  --canvas-line: rgba(15, 23, 42, 0.06);
+
+  --card: #ffffff;
+  --card-line: rgba(15, 23, 42, 0.07);
+  --card-sunken: #f4f5f8;
+
+  --ink: #14171f;
+  --ink-secondary: #616875;
+
+  --brand: #cd3213;
+  --brand-deep: #95240e;
+  --brand-tint: #fde8e2;
+
+  --cat-career: #3d5bfd;
+  --cat-career-tint: #e8ecff;
+  --cat-career-text: #3346c9;
+
+  --cat-health: #087737;
+  --cat-health-tint: #e3f8ea;
+  --cat-health-text: #087737;
+
+  --cat-relationships: #8a35e0;
+  --cat-relationships-tint: #f3e8fd;
+  --cat-relationships-text: #7c2fc7;
+
+  --cat-travel: #e0961a;
+  --cat-travel-tint: #fff3db;
+  --cat-travel-text: #966212;
+
+  --cat-finance: #c22548;
+  --cat-finance-tint: #fde7ec;
+  --cat-finance-text: #ad1f40;
+}
+
+@theme inline {
+  --color-canvas: var(--canvas);
+  --color-canvas-line: var(--canvas-line);
+
+  --color-card: var(--card);
+  --color-card-line: var(--card-line);
+  --color-card-sunken: var(--card-sunken);
+
+  --color-ink: var(--ink);
+  --color-ink-secondary: var(--ink-secondary);
+
+  --color-brand: var(--brand);
+  --color-brand-deep: var(--brand-deep);
+  --color-brand-tint: var(--brand-tint);
+
+  --color-cat-career: var(--cat-career);
+  --color-cat-career-tint: var(--cat-career-tint);
+  --color-cat-career-text: var(--cat-career-text);
+  --color-cat-health: var(--cat-health);
+  --color-cat-health-tint: var(--cat-health-tint);
+  --color-cat-health-text: var(--cat-health-text);
+  --color-cat-relationships: var(--cat-relationships);
+  --color-cat-relationships-tint: var(--cat-relationships-tint);
+  --color-cat-relationships-text: var(--cat-relationships-text);
+  --color-cat-travel: var(--cat-travel);
+  --color-cat-travel-tint: var(--cat-travel-tint);
+  --color-cat-travel-text: var(--cat-travel-text);
+  --color-cat-finance: var(--cat-finance);
+  --color-cat-finance-tint: var(--cat-finance-tint);
+  --color-cat-finance-text: var(--cat-finance-text);
+
+  --font-jakarta: var(--font-jakarta-raw);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background: var(--canvas);
+  color: var(--ink);
+  font-family: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--brand-tint);
+  color: var(--brand-deep);
+}
+
+@keyframes tap-hint {
+  0%,
+  55%,
+  100% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  72% {
+    transform: scale(0.8);
+    opacity: 1;
+  }
+  86% {
+    transform: scale(1.04);
+    opacity: 1;
+  }
+}
+
+.animate-tap-hint {
+  animation: tap-hint 2.6s cubic-bezier(0.45, 0, 0.2, 1) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-tap-hint {
+    animation: none;
+  }
+}
