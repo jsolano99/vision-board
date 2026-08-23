@@ -149,6 +149,9 @@ The nav mark is the mountain-and-ascent lockup (black, transparent PNG), not a l
 - **Style:** pill, tonal — pastel category-tint background, saturated category-hued text. This is the only badge style in the system; solid heavy-color chips were retired in this redesign.
 - **State:** on a board image, the badge doubles as the category-cycle control (click/tap advances to the next category) and carries the animated tap-cursor icon; elsewhere it's read-only.
 
+### Checklist checkboxes
+Square, 20px, 4px radius, 2px border — tighter than the rest of the system so they read as checkboxes, not radio buttons. Unchecked: white fill, card-line border. Checked: coral fill, white CheckIcon. Completing a step draws a strikethrough as a left-origin `scaleX` line, not jumped `text-decoration`. The first time a list appears in a session, the first step plays a one-shot check-then-uncheck demo (skipped when `prefers-reduced-motion`).
+
 ### Segmented Filter / Nav
 - **Style:** a white pill container holding smaller pill buttons; the active button is a solid fill (coral for "All", the category's own solid color for a specific filter) — the one place in the system solid category color still appears, because it's acting as a segmented control, not a taxonomy label.
 

@@ -124,6 +124,58 @@ body {
   }
 }
 
+.step-checkbox {
+  position: relative;
+  transition: transform 140ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.step-checkbox[data-on="true"] {
+  border-color: var(--brand);
+}
+
+.step-row:active .step-checkbox,
+.step-checkbox[data-pressed="true"] {
+  transform: scale(0.97);
+}
+
+.step-checkbox-fill,
+.step-check-mark {
+  opacity: 0;
+  transition: opacity 180ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.step-check-mark {
+  transform: scale(0.95);
+  transition:
+    opacity 180ms cubic-bezier(0.23, 1, 0.32, 1),
+    transform 180ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.step-checkbox-fill[data-on="true"],
+.step-check-mark[data-on="true"] {
+  opacity: 1;
+}
+
+.step-check-mark[data-on="true"] {
+  transform: scale(1);
+}
+
+.step-strike {
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 200ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.step-strike[data-on="true"] {
+  transform: scaleX(1);
+}
+
+@media (hover: hover) {
+  .step-row:hover .step-checkbox[data-on="false"] {
+    border-color: var(--ink-secondary);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .animate-tap-hint {
     animation: none;
@@ -137,5 +189,16 @@ body {
       opacity: 0;
       transform: none;
     }
+  }
+
+  .step-checkbox,
+  .step-checkbox-fill,
+  .step-check-mark,
+  .step-strike {
+    transition: none;
+  }
+
+  .step-check-mark {
+    transform: none;
   }
 }

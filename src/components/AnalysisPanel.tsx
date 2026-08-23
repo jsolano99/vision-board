@@ -239,7 +239,7 @@ export function AnalysisPanel({
           </div>
 
           <div className="mt-4 flex-1 space-y-3">
-            {results.map((r) => (
+            {results.map((r, resultIndex) => (
               <StepCard
                 key={r.category}
                 category={r.category}
@@ -248,7 +248,8 @@ export function AnalysisPanel({
                 steps={r.steps}
                 checked={checkedSteps[r.category] ?? []}
                 isRefining={refiningCategory === r.category}
-                onToggle={(i) => onToggleStep(r.category, i)}
+                playCheckDemo={resultIndex === 0}
+                onToggle={(stepIndex) => onToggleStep(r.category, stepIndex)}
                 onRefine={(note) => onRefineCategory(r.category, note)}
               />
             ))}

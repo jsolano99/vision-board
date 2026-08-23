@@ -1,8 +1,62 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { CATEGORY_META, Category } from "@/lib/categories";
 import { CheckIcon, SendIcon } from "@/components/icons";
+
+type DemoPhase = "idle" | "press" | "on" | "off" | "done";
+
+let checkDemoConsumed = false;
+
+function useCheckDemo(enabled: boolean) {
+  const [phase, setPhase] = useState<DemoPhase>("idle");
+  const abortRef = useRef<(() => void) | null>(null);
+
+  useEffect(() => {
+    if (!enabled) return;
+    if (checkDemoConsumed) return;
+
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) {
+      checkDemoConsumed = true;
+      return;
+    }
+
+    let cancelled = false;
+    const timers: number[] = [];
+    const later = (ms: number, fn: () => void) => {
+      timers.push(
+        window.setTimeout(() => {
+          if (!cancelled) fn();
+        }, ms),
+      );
+    };
+
+    abortRef.current = () => {
+      cancelled = true;
+      timers.forEach(clearTimeout);
+      checkDemoConsumed = true;
+      setPhase("done");
+      abortRef.current = null;
+    };
+
+    later(560, () => {
+      checkDemoConsumed = true;
+      setPhase("press");
+    });
+    later(700, () => setPhase("on"));
+    later(1460, () => setPhase("off"));
+    later(1680, () => setPhase("done"));
+
+    return () => {
+      cancelled = true;
+      timers.forEach(clearTimeout);
+      abortRef.current = null;
+    };
+  }, [enabled]);
+
+  return { phase, abort: () => abortRef.current?.() };
+}
 
 export function StepCard({
   category,
@@ -11,6 +65,7 @@ export function StepCard({
   steps,
   checked,
   isRefining,
+  playCheckDemo = false,
   onToggle,
   onRefine,
 }: {
@@ -20,17 +75,26 @@ export function StepCard({
   steps: string[];
   checked: boolean[];
   isRefining: boolean;
+  playCheckDemo?: boolean;
   onToggle: (index: number) => void;
   onRefine: (note: string) => void;
 }) {
   const [note, setNote] = useState("");
   const meta = CATEGORY_META[category];
+  const { phase: demoPhase, abort: abortDemo } = useCheckDemo(
+    playCheckDemo && steps.length > 0,
+  );
 
   function submitRefine() {
     const trimmed = note.trim();
     if (!trimmed || isRefining) return;
     onRefine(trimmed);
     setNote("");
+  }
+
+  function handleToggle(index: number) {
+    if (index === 0) abortDemo();
+    onToggle(index);
   }
 
   return (
@@ -52,27 +116,47 @@ export function StepCard({
       <ul className="mt-3 space-y-2">
         {steps.map((step, i) => {
           const isChecked = checked[i] ?? false;
+          const demoOn = i === 0 && demoPhase === "on";
+          const demoPress = i === 0 && demoPhase === "press";
+          const visualOn = isChecked || demoOn;
+
           return (
             <li key={i}>
               <button
                 type="button"
-                onClick={() => onToggle(i)}
-                className="flex w-full items-start gap-2.5 text-left"
-                aria-pressed={isChecked}
+                role="checkbox"
+                aria-checked={isChecked}
+                onClick={() => handleToggle(i)}
+                className="step-row flex w-full items-start gap-2.5 rounded-lg text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
               >
                 <span
-                  className={`mt-0.5 flex h-5 w-5 flex-none items-center justify-center rounded-full border-2 transition-colors ${
-                    isChecked ? "border-brand bg-brand" : "border-card-line bg-card"
-                  }`}
+                  className="step-checkbox mt-0.5 flex h-5 w-5 flex-none items-center justify-center rounded-[4px] border-2 border-card-line bg-card"
+                  data-on={visualOn ? "true" : "false"}
+                  data-pressed={demoPress ? "true" : undefined}
                 >
-                  {isChecked && <CheckIcon className="h-3 w-3 text-white" />}
+                  <span
+                    aria-hidden
+                    className="step-checkbox-fill pointer-events-none absolute inset-0 rounded-[2px] bg-brand"
+                    data-on={visualOn ? "true" : "false"}
+                  />
+                  <span
+                    className="step-check-mark relative"
+                    data-on={visualOn ? "true" : "false"}
+                  >
+                    <CheckIcon className="h-3 w-3 text-white" />
+                  </span>
                 </span>
                 <span
-                  className={`text-sm leading-snug ${
-                    isChecked ? "text-ink-secondary line-through" : "text-ink"
+                  className={`relative text-sm leading-snug ${
+                    visualOn ? "text-ink-secondary" : "text-ink"
                   }`}
                 >
                   {step}
+                  <span
+                    aria-hidden
+                    className="step-strike pointer-events-none absolute left-0 top-[0.7em] h-px w-full bg-current"
+                    data-on={visualOn ? "true" : "false"}
+                  />
                 </span>
               </button>
             </li>
