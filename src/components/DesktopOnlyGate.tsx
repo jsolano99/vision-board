@@ -25,7 +25,7 @@ export function DesktopOnlyGate({ year }: { year: number }) {
           id="desktop-gate-heading"
           className="mt-8 text-4xl font-extrabold tracking-tight text-ink"
         >
-          This board is built for a desk.
+          This board is built for desktop.
         </h1>
         <p className="mt-3 max-w-[22rem] text-sm leading-relaxed text-ink-secondary">
           Open it on a computer — the canvas needs room to pin, drag, and plan
