@@ -1,19 +1,21 @@
 import { CATEGORY_META, Category, personalizedSteps } from "@/lib/categories";
 import { getOpenAI } from "@/lib/openai";
+import { CalendarContext, formatCalendarContext } from "@/lib/yearProgress";
 
 export type GeneratedSteps = { goal: string; steps: string[] };
 
 const SYSTEM_PROMPT = `You turn one specific goal shown on someone's personal vision board into a short, scannable action checklist.
 
-Think hard about what the person is actually trying to achieve, using everything you're given: the life area, what their pinned photos actually show, and what they told you they want.
+Think hard about what the person is actually trying to achieve, using everything you're given: the life area, what their pinned photos actually show, what they told you they want, and the calendar context in the user message (today's date and how much of the year remains). Do not guess the current date — use only the calendar numbers you are given.
 
 Then produce:
-- "goal": a short phrase (5-8 words) naming the specific outcome they're working toward — not the life area's name, the actual goal (e.g. "Run a half marathon by April", not "Health goals").
+- "goal": a short phrase (5-8 words) naming the specific outcome they're working toward — not the life area's name, the actual goal (e.g. "Run a half marathon by April", not "Health goals"). The named goal may still name the real aspiration even if this year's remaining time cannot finish it.
 - "steps": exactly 3 to 4 checklist items.
 
 Rules for steps:
 - Each step is ONE short, direct action — a single sentence, ideally under 12 words, starting with a verb ("Book...", "Message...", "Price..."). No sub-clauses, no "and" chaining two actions together, no reasoning or caveats attached.
-- Simple and doable, not overwhelming — something the person could realistically check off today or this week.
+- Each step is a near-term action they can start now, but the SIZE of what it aims at must match the remaining year. Push as far toward the stated goal as that window realistically allows. If months remain, be ambitious (training blocks, bookings, milestones) — never a timid baby step that ignores how much year is left. If days remain, compress: the most they can still honestly do, not a fantasy of finishing the whole goal.
+- Never write a step that assumes the full goal can be completed when remaining time makes that impossible. Example: one day left and the goal is a marathon they cannot finish → "Run 10 miles", not "Run a marathon".
 - Reference a specific concrete detail (a name, number, place, date) when you have one, but keep the sentence itself short even then.
 - Order steps so earlier ones unblock later ones.
 - Write directly as an instruction to the person. Never refer to "the user" or describe what information is missing — if what you're given is thin, still give your best short, concrete starter actions; never make a step about asking the person a question.
@@ -25,7 +27,8 @@ export async function generateSteps(
   category: Category,
   count: number,
   description: string | undefined,
-  answer: string | undefined
+  answer: string | undefined,
+  calendar: CalendarContext
 ): Promise<GeneratedSteps> {
   const openai = getOpenAI();
   if (!openai) return personalizedSteps(category);
@@ -39,7 +42,7 @@ export async function generateSteps(
         { role: "system", content: SYSTEM_PROMPT },
         {
           role: "user",
-          content: `Life area: ${label} (${count} photo(s) pinned).\nWhat the photos show: ${description || "not analyzed"}.\nWhat the user said they want: ${answer || "no additional context given"}.`,
+          content: `Life area: ${label} (${count} photo(s) pinned).\nWhat the photos show: ${description || "not analyzed"}.\nWhat the user said they want: ${answer || "no additional context given"}.\nCalendar: ${formatCalendarContext(calendar)} Scale every step to this remaining window.`,
         },
       ],
     });

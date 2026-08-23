@@ -7,8 +7,7 @@ export type YearProgress = {
   totalWeeks: number;
 };
 
-export function computeYearProgress(year: number): YearProgress {
-  const now = new Date();
+export function computeYearProgress(year: number, now = new Date()): YearProgress {
   const start = new Date(year, 0, 1);
   const end = new Date(year, 11, 31, 23, 59, 59, 999);
   const totalMs = end.getTime() - start.getTime();
@@ -32,4 +31,35 @@ export function computeYearProgress(year: number): YearProgress {
     currentWeekIndex,
     totalWeeks,
   };
+}
+
+/** Server-computed "now" for model prompts — do not let the model guess the date. */
+export type CalendarContext = {
+  todayIso: string;
+  todayLabel: string;
+  year: number;
+  daysLeft: number;
+  weeksLeft: number;
+  monthsLeft: number;
+};
+
+export function getCalendarContext(now = new Date()): CalendarContext {
+  const year = now.getFullYear();
+  const { daysLeft, weeksLeft, monthsLeft } = computeYearProgress(year, now);
+  const todayIso = [
+    year,
+    String(now.getMonth() + 1).padStart(2, "0"),
+    String(now.getDate()).padStart(2, "0"),
+  ].join("-");
+  const todayLabel = now.toLocaleDateString("en-US", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+  return { todayIso, todayLabel, year, daysLeft, weeksLeft, monthsLeft };
+}
+
+export function formatCalendarContext(cal: CalendarContext): string {
+  return `Today is ${cal.todayLabel} (${cal.todayIso}). ${cal.daysLeft} day(s) remain in ${cal.year} — ${cal.weeksLeft} week(s), ${cal.monthsLeft} month(s) left.`;
 }

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { CATEGORY_ORDER, Category } from "@/lib/categories";
 import { generateSteps } from "@/lib/generateSteps";
 import { getOpenAI } from "@/lib/openai";
+import { getCalendarContext } from "@/lib/yearProgress";
 
 type AnalyzeRequestBody = {
   images: { category: Category }[];
@@ -25,13 +26,16 @@ export async function POST(request: NextRequest) {
   }
   const categoriesPresent = CATEGORY_ORDER.filter((c) => counts.has(c));
 
+  const calendar = getCalendarContext();
+
   const results = await Promise.all(
     categoriesPresent.map(async (category) => {
       const generated = await generateSteps(
         category,
         counts.get(category)!,
         body.descriptions?.[category],
-        body.answers?.[category]
+        body.answers?.[category],
+        calendar
       );
       return { category, count: counts.get(category)!, ...generated };
     })

@@ -47,6 +47,7 @@ None yet — no assets, copy, or example boards/lists on hand.
 2. Output is a concrete list of next steps, not sentiment or affirmation.
 3. Keep the vision-board metaphor intact — assembling images, not filling out a goals form; the AI layer augments the physical-vision-board ritual rather than replacing it.
 4. Never fabricate what's "in" the board — next steps must trace to images actually present, not invented content.
+5. Analysis is ambitious-but-doable. Given remaining time in the year and everything else known (pinned images, the user's answers, today's date), output the most ambitious next steps that are actually achievable in that window. Never a fantasy of finishing the whole goal when the calendar makes that impossible, and never a timid step that ignores how much year is left. Example: one day left and the goal is a marathon → "run 10 miles," not "run a marathon" and not "tie your shoes." The named goal can still name the real aspiration; the steps must be the hardest honest path given the calendar.
 
 ## Accessibility & Inclusion
 

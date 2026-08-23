@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Category, CATEGORY_ORDER } from "@/lib/categories";
 import { generateSteps } from "@/lib/generateSteps";
+import { getCalendarContext } from "@/lib/yearProgress";
 
 type RefineRequestBody = {
   category: Category;
@@ -20,7 +21,8 @@ export async function POST(request: NextRequest) {
     body.category,
     body.count ?? 1,
     body.description,
-    body.answer
+    body.answer,
+    getCalendarContext()
   );
 
   return NextResponse.json(generated);

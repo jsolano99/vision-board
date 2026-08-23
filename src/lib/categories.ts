@@ -107,6 +107,7 @@ export const QUESTION_COPY: Record<Category, string> = {
   finance: "What's the number or milestone these photos represent?",
 };
 
+/** Template fallback only — not date-aware. Real analysis in generateSteps.ts scales steps to remaining year. */
 export function personalizedSteps(category: Category): { goal: string; steps: string[] } {
   return stepsFor(category);
 }
