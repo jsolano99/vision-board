@@ -134,6 +134,9 @@ Generously rounded throughout: `28px` for the major cards (board canvas, next-st
 
 ## Components
 
+### Logo
+The nav mark is the mountain-and-ascent lockup (black, transparent PNG), not a letterform monogram. It sits at 32px height beside the "Vision Board" wordmark; on small screens the wordmark hides and the mark carries the name.
+
 ### Buttons
 - **Shape:** pill (`9999px`)
 - **Primary:** coral background, white text, `10px 20px` padding — "+ Add Image", "Analyze Board", "Get Next Steps"

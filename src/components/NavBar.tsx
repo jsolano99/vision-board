@@ -1,12 +1,22 @@
+import Image from "next/image";
+
 export function NavBar() {
   return (
     <header className="flex justify-center px-4 pt-6 sm:px-8">
       <div className="flex w-full max-w-6xl items-center justify-between rounded-full bg-card px-3 py-2 shadow-[0_20px_40px_-28px_rgba(15,23,42,0.35)]">
-        <div className="flex items-center gap-2 pl-2">
-          <span className="flex h-8 w-8 items-center justify-center rounded-full bg-brand text-sm font-bold text-white">
-            VB
-          </span>
-          <span className="hidden text-lg font-bold tracking-tight text-ink sm:inline">
+        <div className="flex items-center gap-2.5 pl-1.5">
+          <Image
+            src="/vision-board-logo.png"
+            alt="Vision Board"
+            width={184}
+            height={128}
+            className="h-8 w-auto"
+            priority
+          />
+          <span
+            className="hidden text-lg font-bold tracking-tight text-ink sm:inline"
+            aria-hidden="true"
+          >
             Vision Board
           </span>
         </div>
