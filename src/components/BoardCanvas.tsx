@@ -107,7 +107,7 @@ export function BoardCanvas({
             <p>Start with the life you want.</p>
             <p>
               <span className="font-semibold text-ink">Step 1 —</span> Add images that
-              represent what you want more of by the end of the year.
+              represent what you want to accomplish by the end of the year.
             </p>
           </>
         ) : (
