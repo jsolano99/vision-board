@@ -210,13 +210,13 @@ export default function Home() {
       <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-6 px-4 pt-8 sm:px-8">
         <div className="flex flex-col justify-between gap-6 sm:flex-row sm:items-center">
           <div>
-            <p className="max-w-md text-sm text-ink-secondary">
+            <h1 className="text-4xl font-extrabold tracking-tight text-ink sm:text-5xl">
+              {boardHeading(boardName, YEAR)}
+            </h1>
+            <p className="mt-2 max-w-md text-sm text-ink-secondary">
               Pin the images that show where you are headed. Once the board is ready, get a
               concrete list of what to actually do about it.
             </p>
-            <h1 className="mt-2 text-4xl font-extrabold tracking-tight text-ink sm:text-5xl">
-              {boardHeading(boardName, YEAR)}
-            </h1>
           </div>
           <YearCountdown year={YEAR} />
         </div>
