@@ -32,7 +32,7 @@ export function WeeksGrid({ year }: { year: number }) {
         Every week checked off brings your vision to life.
       </p>
       <div
-        className="mt-4 flex flex-wrap gap-2"
+        className="mt-4 flex flex-wrap items-center gap-2"
         role="img"
         aria-label={
           progress === null
@@ -46,12 +46,12 @@ export function WeeksGrid({ year }: { year: number }) {
           return (
             <span
               key={i}
-              className={`h-3.5 w-3.5 rounded-full ${
+              className={`rounded-full ${
                 isCurrent
-                  ? "bg-brand-deep ring-2 ring-brand-tint"
+                  ? "h-5 w-5 bg-brand-deep ring-2 ring-brand-tint"
                   : isCompleted
-                    ? "bg-brand"
-                    : "bg-card-sunken"
+                    ? "h-3.5 w-3.5 bg-brand"
+                    : "h-3.5 w-3.5 bg-card-sunken"
               }`}
             />
           );
