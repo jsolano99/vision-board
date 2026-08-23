@@ -112,8 +112,30 @@ body {
   animation: tap-hint 2.6s cubic-bezier(0.45, 0, 0.2, 1) infinite;
 }
 
+.name-prompt {
+  transform-origin: top right;
+  transition:
+    opacity 200ms cubic-bezier(0.23, 1, 0.32, 1),
+    transform 200ms cubic-bezier(0.23, 1, 0.32, 1);
+
+  @starting-style {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .animate-tap-hint {
     animation: none;
+  }
+
+  .name-prompt {
+    transform: none;
+    transition: opacity 150ms ease;
+
+    @starting-style {
+      opacity: 0;
+      transform: none;
+    }
   }
 }

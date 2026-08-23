@@ -15,6 +15,7 @@ import {
 } from "@/components/AnalysisPanel";
 import { BoardImage } from "@/lib/board";
 import { CATEGORY_ORDER, Category, nextCategory } from "@/lib/categories";
+import { BOARD_NAME_KEY, boardHeading, sanitizeName } from "@/lib/displayName";
 
 const YEAR = new Date().getFullYear();
 const TAP_HINT_KEY = "vision-board-tap-hint-dismissed";
@@ -31,13 +32,28 @@ export default function Home() {
   const [tapHintDismissed, setTapHintDismissed] = useState(false);
   const [checkedSteps, setCheckedSteps] = useState<Partial<Record<Category, boolean[]>>>({});
   const [refiningCategory, setRefiningCategory] = useState<Category | null>(null);
+  const [boardName, setBoardName] = useState<string | null>(null);
 
   useEffect(() => {
     const id = setTimeout(() => {
       if (sessionStorage.getItem(TAP_HINT_KEY) === "1") setTapHintDismissed(true);
+      const stored = sanitizeName(localStorage.getItem(BOARD_NAME_KEY) ?? "");
+      if (stored) setBoardName(stored);
     }, 0);
     return () => clearTimeout(id);
   }, []);
+
+  function handleSaveName(name: string) {
+    const cleaned = sanitizeName(name);
+    if (!cleaned) return;
+    localStorage.setItem(BOARD_NAME_KEY, cleaned);
+    setBoardName(cleaned);
+  }
+
+  function handleClearName() {
+    localStorage.removeItem(BOARD_NAME_KEY);
+    setBoardName(null);
+  }
 
   const categoriesPresent = CATEGORY_ORDER.filter((c) =>
     images.some((img) => img.category === c)
@@ -189,7 +205,7 @@ export default function Home() {
 
   return (
     <div className="flex min-h-screen flex-col pb-10">
-      <NavBar />
+      <NavBar name={boardName} onSaveName={handleSaveName} onClearName={handleClearName} />
 
       <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-6 px-4 pt-8 sm:px-8">
         <div className="flex flex-col justify-between gap-6 sm:flex-row sm:items-center">
@@ -199,7 +215,7 @@ export default function Home() {
               concrete list of what to actually do about it.
             </p>
             <h1 className="mt-2 text-4xl font-extrabold tracking-tight text-ink sm:text-5xl">
-              Your {YEAR} Vision Board
+              {boardHeading(boardName, YEAR)}
             </h1>
           </div>
           <YearCountdown year={YEAR} />

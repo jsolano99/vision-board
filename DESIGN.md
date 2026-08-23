@@ -142,7 +142,8 @@ The nav mark is the mountain-and-ascent lockup (black, transparent PNG), not a l
 - **Primary:** coral background, white text, `10px 20px` padding — "+ Add Image", "Analyze Board", "Get Next Steps"
 - **Hover / Focus:** background steps to coral-deep; scales up ~2% on hover, ~2% down on active press
 - **Disabled:** card-sunken background, ink-secondary text, cursor not-allowed
-- **Muted/inert (not yet wired):** card-sunken background at reduced opacity, ink-secondary text, cursor not-allowed — "Sign In", "Archive." Used only for features that are visually present but not actually functional yet; never styled to look active.
+- **Secondary (wired, not primary):** card-sunken background, ink text, full opacity — "Sign In" (opens the name prompt). After a name is saved, the same pill shows the name and reopens the prompt to change or remove it. No avatar.
+- **Muted/inert (not yet wired):** card-sunken background at reduced opacity, ink-secondary text, cursor not-allowed — "Archive." Used only for features that are visually present but not actually functional yet; never styled to look active.
 
 ### Chips (category badges)
 - **Style:** pill, tonal — pastel category-tint background, saturated category-hued text. This is the only badge style in the system; solid heavy-color chips were retired in this redesign.
@@ -157,6 +158,9 @@ The nav mark is the mountain-and-ascent lockup (black, transparent PNG), not a l
 - **Shadow Strategy:** see Elevation & Depth — one soft, diffuse shadow per floating surface
 - **Border:** none by default; a 2px dashed card-line border marks the board's drop zone specifically
 
+### Name prompt
+A small popover from the nav's Sign In control — not a full-page account flow. White 24px-radius card, diffuse shadow, first-name field only. Copy is explicit: the name is stored on this device and is not an account. The page H1 becomes `{Name}'s {year} Vision Board` (`{Name}'` when the name already ends in *s*); with no name it stays "Your {year} Vision Board."
+
 ### Radial Progress Ring (signature component)
 An SVG ring (128px, 11px stroke, round linecap) whose filled arc tracks the fraction of the year elapsed, with the days-remaining count centered in extrabold numerals and a "days left" label beneath. Direct translation of the reference's BPM-measurement gauge: the ring shows *progress*, the number shows the *metric* — never merged into one value.
 
@@ -170,5 +174,5 @@ An SVG ring (128px, 11px stroke, round linecap) whose filled arc tracks the frac
 
 ### Don't:
 - **Don't** reintroduce the first world's dark panels, saturated field background, or condensed display face — that world is retired, not a fallback.
-- **Don't** style an unwired feature (no real backend behind it) to look active; mute it like "Sign In."
+- **Don't** style an unwired feature to look active; mute it like "Archive." Don't invent an avatar or signed-in account chrome for the name prompt.
 - **Don't** drop text below 0.75rem (12px) anywhere in the system.
