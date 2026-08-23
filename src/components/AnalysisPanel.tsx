@@ -80,6 +80,12 @@ export function AnalysisPanel({
 
       {status === "idle" && (
         <>
+          {imageCount > 0 && (
+            <p className="mt-3 text-xs text-ink-secondary">
+              <span className="font-semibold text-ink">Step 3 —</span> Analyze the board to
+              get concrete next steps from the pictures you pinned.
+            </p>
+          )}
           <button
             type="button"
             disabled={imageCount === 0}
@@ -97,11 +103,6 @@ export function AnalysisPanel({
             <p className="mt-3 text-sm text-ink-secondary">
               A few more images will give you a richer read — but {imageCount} is enough to
               start.
-            </p>
-          )}
-          {imageCount > 0 && (
-            <p className="mt-5 text-sm text-ink-secondary">
-              Your next steps will show up here.
             </p>
           )}
         </>
