@@ -119,7 +119,7 @@ One committed coral accent, a white/light-gray neutral system, and five fixed to
 
 ## Layout
 
-Unchanged from the prior world at the structural level: a centered `max-w-6xl` column, header row (H1 + intro left, year ring right), a wrapping segmented filter row, then a two-zone dashboard — board canvas majority-width, next-steps rail fixed at 380px, side-by-side from `lg` up and stacked full-width below it. What changed is materials, not structure: every zone is now a distinct white card on the light canvas rather than a dark panel on a saturated field.
+Unchanged from the prior world at the structural level: a centered `max-w-6xl` column, header row (H1 + intro left, year ring right), a wrapping segmented filter row, then a two-zone dashboard — board canvas majority-width, next-steps rail fixed at 380px, side-by-side from `lg` up and stacked full-width below it. What changed is materials, not structure: every zone is now a distinct white card on the light canvas rather than a dark panel on a saturated field. On viewports below `md` (768px), mobile is a desktop invitation — the year ring and a short message — not a cramped board.
 
 ## Elevation & Depth
 

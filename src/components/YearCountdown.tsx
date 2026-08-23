@@ -8,7 +8,13 @@ const STROKE = 11;
 const RADIUS = (SIZE - STROKE) / 2;
 const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
 
-export function YearCountdown({ year }: { year: number }) {
+export function YearCountdown({
+  year,
+  compact = false,
+}: {
+  year: number;
+  compact?: boolean;
+}) {
   const [progress, setProgress] = useState<YearProgress | null>(null);
 
   useEffect(() => {
@@ -67,18 +73,20 @@ export function YearCountdown({ year }: { year: number }) {
 
       <span className="mt-3 text-xs font-medium text-ink-secondary">Through {year}</span>
 
-      <div className="mt-4 flex w-full items-stretch justify-between gap-2 border-t border-canvas-line pt-4">
-        {stats.map((s) => (
-          <div key={s.label} className="flex flex-1 flex-col items-center">
-            <span className="text-lg font-bold tabular-nums leading-none text-ink">
-              {s.value === null ? "--" : s.value}
-            </span>
-            <span className="mt-1 text-xs font-medium tracking-wide text-ink-secondary uppercase">
-              {s.label}
-            </span>
-          </div>
-        ))}
-      </div>
+      {!compact && (
+        <div className="mt-4 flex w-full items-stretch justify-between gap-2 border-t border-canvas-line pt-4">
+          {stats.map((s) => (
+            <div key={s.label} className="flex flex-1 flex-col items-center">
+              <span className="text-lg font-bold tabular-nums leading-none text-ink">
+                {s.value === null ? "--" : s.value}
+              </span>
+              <span className="mt-1 text-xs font-medium tracking-wide text-ink-secondary uppercase">
+                {s.label}
+              </span>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

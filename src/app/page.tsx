@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { DesktopOnlyGate } from "@/components/DesktopOnlyGate";
 import { NavBar } from "@/components/NavBar";
 import { YearCountdown } from "@/components/YearCountdown";
 import { WeeksGrid } from "@/components/WeeksGrid";
@@ -204,59 +205,62 @@ export default function Home() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col pb-10">
-      <NavBar name={boardName} onSaveName={handleSaveName} onClearName={handleClearName} />
+    <>
+      <DesktopOnlyGate year={YEAR} />
+      <div className="hidden min-h-screen flex-col pb-10 md:flex">
+        <NavBar name={boardName} onSaveName={handleSaveName} onClearName={handleClearName} />
 
-      <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-6 px-4 pt-8 sm:px-8">
-        <div className="flex flex-col justify-between gap-6 sm:flex-row sm:items-center">
-          <div>
-            <h1 className="text-4xl font-extrabold tracking-tight text-ink sm:text-5xl">
-              {boardHeading(boardName, YEAR)}
-            </h1>
-            <p className="mt-2 max-w-md text-sm text-ink-secondary">
-              Pin the images that show where you are headed. Once the board is ready, get a
-              concrete list of what to actually do about it.
-            </p>
+        <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-6 px-4 pt-8 sm:px-8">
+          <div className="flex flex-col justify-between gap-6 sm:flex-row sm:items-center">
+            <div>
+              <h1 className="text-4xl font-extrabold tracking-tight text-ink sm:text-5xl">
+                {boardHeading(boardName, YEAR)}
+              </h1>
+              <p className="mt-2 max-w-md text-sm text-ink-secondary">
+                Pin the images that show where you are headed. Once the board is ready, get a
+                concrete list of what to actually do about it.
+              </p>
+            </div>
+            <YearCountdown year={YEAR} />
           </div>
-          <YearCountdown year={YEAR} />
-        </div>
 
-        <WeeksGrid year={YEAR} />
+          <WeeksGrid year={YEAR} />
 
-        <CategoryFilterTabs active={filter} onChange={setFilter} />
+          <CategoryFilterTabs active={filter} onChange={setFilter} />
 
-        <div className="flex flex-1 flex-col gap-6 lg:flex-row">
-          <BoardCanvas
-            images={images}
-            filter={filter}
-            showTapHint={!tapHintDismissed}
-            onImagesAdded={handleImagesAdded}
-            onMove={handleMove}
-            onCycleCategory={handleCycleCategory}
-            onRemove={handleRemove}
-          />
-          <AnalysisPanel
-            imageCount={images.length}
-            status={status}
-            categoriesPresent={categoriesPresent}
-            insights={insights}
-            answers={answers}
-            results={results}
-            checkedSteps={checkedSteps}
-            refiningCategory={refiningCategory}
-            errorMessage={errorMessage}
-            onStartAnalysis={handleStartAnalysis}
-            onBackToIdle={() => setStatus("idle")}
-            onEditAnswers={() => setStatus("questions")}
-            onAnswerChange={handleAnswerChange}
-            onSubmitAnswers={handleSubmitAnswers}
-            onRetry={handleRetry}
-            onToggleStep={handleToggleStep}
-            onRefineCategory={handleRefineCategory}
-            onExportList={handleExportList}
-          />
-        </div>
-      </main>
-    </div>
+          <div className="flex flex-1 flex-col gap-6 lg:flex-row">
+            <BoardCanvas
+              images={images}
+              filter={filter}
+              showTapHint={!tapHintDismissed}
+              onImagesAdded={handleImagesAdded}
+              onMove={handleMove}
+              onCycleCategory={handleCycleCategory}
+              onRemove={handleRemove}
+            />
+            <AnalysisPanel
+              imageCount={images.length}
+              status={status}
+              categoriesPresent={categoriesPresent}
+              insights={insights}
+              answers={answers}
+              results={results}
+              checkedSteps={checkedSteps}
+              refiningCategory={refiningCategory}
+              errorMessage={errorMessage}
+              onStartAnalysis={handleStartAnalysis}
+              onBackToIdle={() => setStatus("idle")}
+              onEditAnswers={() => setStatus("questions")}
+              onAnswerChange={handleAnswerChange}
+              onSubmitAnswers={handleSubmitAnswers}
+              onRetry={handleRetry}
+              onToggleStep={handleToggleStep}
+              onRefineCategory={handleRefineCategory}
+              onExportList={handleExportList}
+            />
+          </div>
+        </main>
+      </div>
+    </>
   );
 }
