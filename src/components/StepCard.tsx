@@ -6,9 +6,19 @@ import { CheckIcon, SendIcon } from "@/components/icons";
 
 type DemoPhase = "idle" | "press" | "on" | "off" | "done";
 
-let checkDemoConsumed = false;
+export const DEMO_STAGGER_MS = 50;
 
-function useCheckDemo(enabled: boolean) {
+let checkDemoConsumed = false;
+const demoAborts = new Set<() => void>();
+
+function abortAllCheckDemos() {
+  checkDemoConsumed = true;
+  const pending = [...demoAborts];
+  demoAborts.clear();
+  pending.forEach((fn) => fn());
+}
+
+function useCheckDemo(enabled: boolean, delayMs = 0) {
   const [phase, setPhase] = useState<DemoPhase>("idle");
   const abortRef = useRef<(() => void) | null>(null);
 
@@ -32,30 +42,33 @@ function useCheckDemo(enabled: boolean) {
       );
     };
 
-    abortRef.current = () => {
+    const abortThis = () => {
       cancelled = true;
       timers.forEach(clearTimeout);
-      checkDemoConsumed = true;
       setPhase("done");
       abortRef.current = null;
     };
 
-    later(560, () => {
+    abortRef.current = abortThis;
+    demoAborts.add(abortThis);
+
+    later(560 + delayMs, () => {
       checkDemoConsumed = true;
       setPhase("press");
     });
-    later(700, () => setPhase("on"));
-    later(1460, () => setPhase("off"));
-    later(1680, () => setPhase("done"));
+    later(700 + delayMs, () => setPhase("on"));
+    later(1460 + delayMs, () => setPhase("off"));
+    later(1680 + delayMs, () => setPhase("done"));
 
     return () => {
       cancelled = true;
       timers.forEach(clearTimeout);
+      demoAborts.delete(abortThis);
       abortRef.current = null;
     };
-  }, [enabled]);
+  }, [enabled, delayMs]);
 
-  return { phase, abort: () => abortRef.current?.() };
+  return { phase, abort: abortAllCheckDemos };
 }
 
 export function StepCard({
@@ -66,6 +79,7 @@ export function StepCard({
   checked,
   isRefining,
   playCheckDemo = false,
+  demoDelayMs = 0,
   onToggle,
   onRefine,
 }: {
@@ -76,13 +90,15 @@ export function StepCard({
   checked: boolean[];
   isRefining: boolean;
   playCheckDemo?: boolean;
+  demoDelayMs?: number;
   onToggle: (index: number) => void;
   onRefine: (note: string) => void;
 }) {
   const [note, setNote] = useState("");
   const meta = CATEGORY_META[category];
   const { phase: demoPhase, abort: abortDemo } = useCheckDemo(
-    playCheckDemo && steps.length > 0,
+    playCheckDemo && steps.length > 0 && !(checked[0] ?? false),
+    demoDelayMs,
   );
 
   function submitRefine() {
@@ -93,7 +109,7 @@ export function StepCard({
   }
 
   function handleToggle(index: number) {
-    if (index === 0) abortDemo();
+    abortDemo();
     onToggle(index);
   }
 
@@ -147,16 +163,11 @@ export function StepCard({
                   </span>
                 </span>
                 <span
-                  className={`relative text-sm leading-snug ${
-                    visualOn ? "text-ink-secondary" : "text-ink"
+                  className={`min-w-0 flex-1 text-sm leading-snug ${
+                    visualOn ? "text-ink-secondary line-through" : "text-ink"
                   }`}
                 >
                   {step}
-                  <span
-                    aria-hidden
-                    className="step-strike pointer-events-none absolute left-0 top-[0.7em] h-px w-full bg-current"
-                    data-on={visualOn ? "true" : "false"}
-                  />
                 </span>
               </button>
             </li>

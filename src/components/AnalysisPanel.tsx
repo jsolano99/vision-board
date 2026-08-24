@@ -3,7 +3,7 @@
 import { useState, type MouseEvent } from "react";
 import { CATEGORY_META, Category, QUESTION_COPY } from "@/lib/categories";
 import { CheckIcon, CopyIcon, MailIcon } from "@/components/icons";
-import { StepCard } from "@/components/StepCard";
+import { DEMO_STAGGER_MS, StepCard } from "@/components/StepCard";
 import { buildMailtoHref, openMailto } from "@/lib/mailto";
 
 export type AnalysisResult = { category: Category; count: number; goal: string; steps: string[] };
@@ -248,7 +248,8 @@ export function AnalysisPanel({
                 steps={r.steps}
                 checked={checkedSteps[r.category] ?? []}
                 isRefining={refiningCategory === r.category}
-                playCheckDemo={resultIndex === 0}
+                playCheckDemo
+                demoDelayMs={resultIndex * DEMO_STAGGER_MS}
                 onToggle={(stepIndex) => onToggleStep(r.category, stepIndex)}
                 onRefine={(note) => onRefineCategory(r.category, note)}
               />

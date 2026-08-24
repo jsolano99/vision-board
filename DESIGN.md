@@ -150,7 +150,7 @@ The nav mark is the mountain-and-ascent lockup (black, transparent PNG), not a l
 - **State:** on a board image, the badge doubles as the category-cycle control (click/tap advances to the next category) and carries the animated tap-cursor icon; elsewhere it's read-only.
 
 ### Checklist checkboxes
-Square, 20px, 4px radius, 2px border — tighter than the rest of the system so they read as checkboxes, not radio buttons. Unchecked: white fill, card-line border. Checked: coral fill, white CheckIcon. Completing a step draws a strikethrough as a left-origin `scaleX` line, not jumped `text-decoration`. The first time a list appears in a session, the first step plays a one-shot check-then-uncheck demo (skipped when `prefers-reduced-motion`).
+Square, 20px, 4px radius, 2px border — tighter than the rest of the system so they read as checkboxes, not radio buttons. Unchecked: white fill, card-line border. Checked: coral fill, white CheckIcon. Completing a step uses native `line-through` so the strike follows each wrapped line to the glyph edge, never a full-width overlay. The first time a list appears in a session, the first step of every category plays a one-shot check-then-uncheck demo, staggered ~50ms between sections (skipped when `prefers-reduced-motion`).
 
 ### Segmented Filter / Nav
 - **Style:** a white pill container holding smaller pill buttons; the active button is a solid fill (coral for "All", the category's own solid color for a specific filter) — the one place in the system solid category color still appears, because it's acting as a segmented control, not a taxonomy label.
