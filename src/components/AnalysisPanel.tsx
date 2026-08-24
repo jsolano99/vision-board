@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type MouseEvent } from "react";
 import { CATEGORY_META, Category, QUESTION_COPY } from "@/lib/categories";
 import { CheckIcon, CopyIcon, MailIcon } from "@/components/icons";
 import { StepCard } from "@/components/StepCard";
+import { buildMailtoHref, openMailto } from "@/lib/mailto";
 
 export type AnalysisResult = { category: Category; count: number; goal: string; steps: string[] };
 export type AnalysisStatus = "idle" | "vision_loading" | "questions" | "loading" | "success" | "error";
@@ -51,10 +52,9 @@ export function AnalysisPanel({
 }) {
   const [copied, setCopied] = useState(false);
 
-  function handleEmail() {
-    const body = onExportList();
-    const subject = "My Vision Board — Next Steps";
-    window.location.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  function handleEmail(event: MouseEvent<HTMLAnchorElement>) {
+    event.preventDefault();
+    openMailto("My Vision Board — Next Steps", onExportList());
   }
 
   async function handleCopy() {
@@ -216,14 +216,14 @@ export function AnalysisPanel({
       {status === "success" && (
         <div className="mt-4 flex flex-1 flex-col">
           <div className="flex gap-2">
-            <button
-              type="button"
+            <a
+              href={buildMailtoHref("My Vision Board — Next Steps", onExportList())}
               onClick={handleEmail}
-              className="flex flex-1 items-center justify-center gap-1.5 rounded-full bg-card-sunken py-2 text-xs font-semibold text-ink transition-colors hover:bg-canvas"
+              className="flex flex-1 items-center justify-center gap-1.5 rounded-full bg-card-sunken py-2 text-xs font-semibold text-ink no-underline transition-colors hover:bg-canvas"
             >
               <MailIcon className="h-3.5 w-3.5" />
               Email me this list
-            </button>
+            </a>
             <button
               type="button"
               onClick={handleCopy}
